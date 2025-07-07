@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Smart Task Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neu-bg': '#f0f2f5',
+                        'neu-light': '#ffffff',
+                        'neu-dark': '#d1d5db',
+                        'primary': '#3b82f6',
+                        'secondary': '#8b5cf6',
+                    },
+                    boxShadow: {
+                        'neu': '8px 8px 16px #d1d5db, -8px -8px 16px #ffffff',
+                        'neu-inset': 'inset 8px 8px 16px #d1d5db, inset -8px -8px 16px #ffffff',
+                        'neu-small': '4px 4px 8px #d1d5db, -4px -4px 8px #ffffff',
+                        'neu-pressed': 'inset 4px 4px 8px #d1d5db, inset -4px -4px 8px #ffffff',
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'bounce-in': 'bounceIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        bounceIn: {
+                            '0%': { transform: 'scale(0.3)', opacity: '0' },
+                            '50%': { transform: 'scale(1.05)', opacity: '0.8' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-neu-bg font-sans overflow-x-hidden">
+    <!-- Header -->
+    <header class="bg-neu-bg shadow-neu sticky top-0 z-40 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-primary to-secondary rounded-lg shadow-neu-small flex items-center justify-center">
+                    <svg class="w-3 h-3 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">TaskFlow</h1>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="exportBtn" class="p-2 rounded-lg bg-neu-bg shadow-neu-small hover:shadow-neu-pressed transition-all focus:outline-none focus:ring-2 focus:ring-primary">
+                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6">
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div class="bg-neu-bg rounded-xl shadow-neu p-3 sm:p-4 text-center hover:shadow-neu-pressed transition-all">
+                <div class="text-lg sm:text-xl lg:text-3xl font-bold text-primary" id="totalTasks">0</div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">Total</div>
+            </div>
+            <div class="bg-neu-bg rounded-xl shadow-neu p-3 sm:p-4 text-center hover:shadow-neu-pressed transition-all">
+                <div class="text-lg sm:text-xl lg:text-3xl font-bold text-green-600" id="completedTasks">0</div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">Done</div>
+            </div>
+            <div class="bg-neu-bg rounded-xl shadow-neu p-3 sm:p-4 text-center hover:shadow-neu-pressed transition-all">
+                <div class="text-lg sm:text-xl lg:text-3xl font-bold text-orange-600" id="activeTasks">0</div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">Active</div>
+            </div>
+            <div class="bg-neu-bg rounded-xl shadow-neu p-3 sm:p-4 text-center hover:shadow-neu-pressed transition-all">
+                <div class="text-lg sm:text-xl lg:text-3xl font-bold text-purple-600" id="completionRate">0%</div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">Rate</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+            <!-- Task Creation Panel -->
+            <div class="lg:col-span-1 order-2 lg:order-1">
+                <div id="taskFormContainer" class="bg-neu-bg rounded-xl shadow-neu p-4 sm:p-6 lg:sticky lg:top-24 hidden lg:block">
+                    <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span class="hidden sm:inline">Create New Task</span>
+                        <span class="sm:hidden">New Task</span>
+                    </h2>
+                    
+                    <form id="taskForm" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2 text-sm">Task Title *</label>
+                            <input 
+                                type="text" 
+                                id="taskTitle" 
+                                placeholder="Enter task title..."
+                                class="w-full px-3 py-2 sm:px-4 sm:py-3 bg-neu-bg rounded-xl shadow-neu-inset text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm sm:text-base"
+                                maxlength="60"
+                                required
+                            >
+                            <div class="flex justify-between mt-1">
+                                <span id="titleError" class="text-red-500 text-xs hidden">Title is required</span>
+                                <span id="titleCount" class="text-gray-400 text-xs">0/60</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2 text-sm">Description</label>
+                            <textarea 
+                                id="taskDescription" 
+                                placeholder="Add more details..."
+                                class="w-full px-3 py-2 sm:px-4 sm:py-3 bg-neu-bg rounded-xl shadow-neu-inset text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none text-sm sm:text-base"
+                                rows="3"
+                                maxlength="200"
+                            ></textarea>
+                            <div class="flex justify-end mt-1">
+                                <span id="descCount" class="text-gray-400 text-xs">0/200</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2 text-sm">Priority</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" class="priority-btn px-2 py-2 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-all text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-green-500" data-priority="low">
+                                    Low
+                                </button>
+                                <button type="button" class="priority-btn active px-2 py-2 rounded-lg bg-yellow-200 text-yellow-800 hover:bg-yellow-200 transition-all text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-yellow-500" data-priority="medium">
+                                    Medium
+                                </button>
+                                <button type="button" class="priority-btn px-2 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-all text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500" data-priority="high">
+                                    High
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2 text-sm">Due Date</label>
+                            <input 
+                                type="date" 
+                                id="taskDueDate" 
+                                class="w-full px-3 py-2 sm:px-4 sm:py-3 bg-neu-bg rounded-xl shadow-neu-inset text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm sm:text-base"
+                            >
+                        </div>
+
+                        <button 
+                            type="submit"
+                            id="createTaskBtn"
+                            class="w-full px-4 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl shadow-neu hover:shadow-neu-pressed transition-all transform hover:scale-105 active:scale-95 font-semibold text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-primary"
+                        >
+                            <span class="flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Create Task
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Task List Panel -->
+            <div class="lg:col-span-2 order-1 lg:order-2">
+                <div class="bg-neu-bg rounded-xl shadow-neu p-4 sm:p-6">
+                    <!-- Filter and Search -->
+                    <div class="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                        <!-- Search -->
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="searchTasks" 
+                                placeholder="Search tasks..."
+                                class="w-full px-4 py-3 pl-10 sm:pl-12 bg-neu-bg rounded-xl shadow-neu-inset text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm sm:text-base"
+                            >
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 sm:left-4 top-3.5 sm:top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="flex flex-wrap gap-2">
+                            <button id="filterAll" class="filter-btn active px-3 py-2 rounded-lg bg-neu-bg shadow-neu-small hover:shadow-neu-pressed transition-all font-medium text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                All
+                            </button>
+                            <button id="filterActive" class="filter-btn px-3 py-2 rounded-lg bg-neu-bg shadow-neu-small hover:shadow-neu-pressed transition-all font-medium text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                Active
+                            </button>
+                            <button id="filterCompleted" class="filter-btn px-3 py-2 rounded-lg bg-neu-bg shadow-neu-small hover:shadow-neu-pressed transition-all font-medium text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                Done
+                            </button>
+                        </div>
+
+                        <!-- Sort and Actions -->
+                        <div class="flex flex-col sm:flex-row gap-2 sm:items-center justify-between">
+                            <div class="flex gap-2">
+                                <select id="sortBy" class="px-3 py-2 bg-neu-bg rounded-lg shadow-neu-small focus:outline-none focus:ring-2 focus:ring-primary text-gray-700 text-xs sm:text-sm">
+                                    <option value="created">By Date</option>
+                                    <option value="priority">By Priority</option>
+                                    <option value="title">By Title</option>
+                                    <option value="due">By Due Date</option>
+                                </select>
+                                <button id="sortOrder" class="px-3 py-2 bg-neu-bg rounded-lg shadow-neu-small hover:shadow-neu-pressed transition-all text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <button id="clearCompleted" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                                Clear Done
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Task List -->
+                    <div id="taskList" class="space-y-3 max-h-80 sm:max-h-96 overflow-y-auto custom-scrollbar">
+                        <!-- Tasks will be rendered here -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="emptyState" class="text-center py-8 sm:py-12 hidden">
+                        <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-600 mb-2">No tasks found</h3>
+                        <p class="text-gray-500 text-sm">Create your first task to get started!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2 max-w-sm">
+        <!-- Toasts will be added here -->
+    </div>
+
+    <!-- Task Detail Modal -->
+    <div id="taskModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-neu-bg rounded-xl shadow-neu p-4 sm:p-6 max-w-md w-full max-h-screen overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-800">Edit Task</h3>
+                <button id="closeModal" class="p-2 rounded-lg hover:bg-gray-100 transition-all focus:outline-none focus:ring-2 focus:ring-primary">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modalContent">
+                <!-- Modal content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+</body>
+</html>
