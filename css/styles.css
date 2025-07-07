@@ -7,6 +7,23 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%, #f8fafc 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    min-height: 100vh;
+}
+
+/* Animated gradient background */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* Custom scrollbar */
@@ -15,17 +32,17 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f0f2f5;
+    background: rgba(248, 250, 252, 0.5);
     border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.6), rgba(139, 92, 246, 0.6));
     border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.8), rgba(124, 58, 237, 0.8));
 }
 
 /* Filter buttons */
@@ -37,6 +54,10 @@ body {
     cursor: pointer;
     user-select: none;
     touch-action: manipulation;
+    background: rgba(248, 250, 252, 0.9) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(226, 232, 240, 0.3);
+    box-shadow: 0 2px 4px -1px rgba(59, 130, 246, 0.1), 0 1px 2px -1px rgba(59, 130, 246, 0.06);
 }
 
 .filter-btn.active {
@@ -46,8 +67,8 @@ body {
 }
 
 .filter-btn:hover:not(.active) {
-    color: #1f2937;
-    background-color: #f9fafb;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.15), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
 }
 
 .filter-btn:focus {
@@ -63,6 +84,8 @@ body {
     cursor: pointer;
     user-select: none;
     touch-action: manipulation;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(226, 232, 240, 0.3);
 }
 
 .priority-btn.active {
@@ -102,9 +125,11 @@ body {
 
 /* Task item styling */
 .task-item {
-    background: #f0f2f5;
+    background: rgba(248, 250, 252, 0.9);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(226, 232, 240, 0.3);
     border-radius: 0.75rem;
-    box-shadow: 4px 4px 8px #d1d5db, -4px -4px 8px #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06);
     transition: all 0.2s ease;
     padding: 1rem;
     margin-bottom: 0.75rem;
@@ -115,7 +140,8 @@ body {
 
 .task-item:hover {
     transform: translateY(-1px);
-    box-shadow: 6px 6px 12px #d1d5db, -6px -6px 12px #ffffff;
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1), 0 4px 6px -2px rgba(59, 130, 246, 0.05);
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .task-item.completed {
@@ -274,13 +300,15 @@ input:focus, textarea:focus, select:focus {
 }
 
 input, textarea, select {
-    background: #f0f2f5;
-    border: 1px solid #e5e7eb;
+    background: rgba(248, 250, 252, 0.9) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(226, 232, 240, 0.4);
     transition: all 0.2s ease;
 }
 
 input:hover, textarea:hover, select:hover {
-    border-color: #d1d5db;
+    border-color: rgba(59, 130, 246, 0.3);
+    background: rgba(255, 255, 255, 0.9) !important;
 }
 
 /* Mobile form adjustments */
@@ -426,612 +454,351 @@ input:hover, textarea:hover, select:hover {
     transition: colors 0.2s ease;
 }
 
-/* Task item animations */
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+/* Legendary Container Animations */
+
+/* Stats Cards - Slide in from different directions */
+.grid > div:nth-child(1) {
+    animation: slideInLeft 0.8s ease-out;
 }
 
-@keyframes slideOutRight {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(100%);
-        opacity: 0;
-    }
+.grid > div:nth-child(2) {
+    animation: slideInDown 0.8s ease-out 0.2s backwards;
 }
 
-.slide-in {
-    animation: slideInLeft 0.3s ease-out;
+.grid > div:nth-child(3) {
+    animation: slideInUp 0.8s ease-out 0.4s backwards;
 }
 
-.slide-out {
-    animation: slideOutRight 0.3s ease-out;
+.grid > div:nth-child(4) {
+    animation: slideInRight 0.8s ease-out 0.6s backwards;
 }
 
-/* Utility classes */
-.text-gradient {
-    background: linear-gradient(to right, #2563eb, #7c3aed);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* Task Form Container - Epic entrance */
+#taskFormContainer {
+    animation: epicEntrance 1s ease-out 0.8s backwards;
 }
 
-.glassmorphism {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+/* Task List Container - Spectacular reveal */
+.lg\:col-span-2 > div {
+    animation: spectacularReveal 1s ease-out 1s backwards;
 }
 
-/* Error states */
-.error-input {
-    border-color: #ef4444 !important;
-    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5) !important;
-}
-
-.error-text {
-    color: #ef4444;
-    font-size: 0.875rem;
-}
-
-/* Success states */
-.success-input {
-    border-color: #10b981 !important;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5) !important;
-}
-
-.success-text {
-    color: #10b981;
-    font-size: 0.875rem;
-}
-
-/* Fix overflow issues */
-.container-responsive {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
-/* Prevent text overflow */
-.text-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* Better word wrapping */
-.word-break {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-}
-
-/* Mobile-specific fixes */
-@media (max-width: 768px) {
-    /* Prevent horizontal scroll */
-    body {
-        overflow-x: hidden;
-    }
-    
-    /* Better spacing on mobile */
-    .space-y-3 > * + * {
-        margin-top: 0.75rem;
-    }
-    
-    /* Mobile toast positioning */
-    #toastContainer {
-        right: 1rem;
-        top: 1rem;
-        left: 1rem;
-        max-width: none;
-    }
-    
-    /* Mobile modal improvements */
-    #taskModal .bg-neu-bg {
-        margin: 1rem;
-        max-height: calc(100vh - 2rem);
-    }
-}
-
-/* Print styles */
-@media print {
-    .no-print {
-        display: none !important;
-    }
-    
-    .task-item {
-        box-shadow: none;
-        border: 1px solid #e5e7eb;
-        margin-bottom: 1rem;
-    }
-}
-
-/* High contrast mode */
-@media (prefers-contrast: high) {
-    .task-item {
-        border: 2px solid #000;
-    }
-    
-    .filter-btn.active {
-        background: #000 !important;
-        color: #fff !important;
-    }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* Fix task card layout */
+/* Task Items - Cascade effect */
 .task-item {
-    background: #f0f2f5;
-    border-radius: 0.75rem;
-    box-shadow: 4px 4px 8px #d1d5db, -4px -4px 8px #ffffff;
-    transition: all 0.2s ease;
-    padding: 1rem;
-    margin-bottom: 0.75rem;
-    position: relative;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    animation: cascadeIn 0.6s ease-out backwards;
 }
 
-.task-item:hover {
-    transform: translateY(-1px);
-    box-shadow: 6px 6px 12px #d1d5db, -6px -6px 12px #ffffff;
+.task-item:nth-child(1) { animation-delay: 1.2s; }
+.task-item:nth-child(2) { animation-delay: 1.4s; }
+.task-item:nth-child(3) { animation-delay: 1.6s; }
+.task-item:nth-child(4) { animation-delay: 1.8s; }
+.task-item:nth-child(5) { animation-delay: 2s; }
+.task-item:nth-child(n+6) { animation-delay: 2.2s; }
+
+/* Header Animation */
+header {
+    animation: headerDrop 0.8s ease-out;
 }
 
-/* Fix task content spacing */
-.task-item .task-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-}
+/* Keyframes for legendary animations */
 
-.task-item .task-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.task-item .task-actions {
-    display: flex;
-    gap: 0.25rem;
-    flex-shrink: 0;
-}
-
-/* Fix mobile task layout */
-@media (max-width: 768px) {
-    .task-item {
-        padding: 0.75rem;
-    }
-    
-    .task-item .task-actions {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .task-item .task-actions button {
-        padding: 0.5rem;
-        min-width: 36px;
-        min-height: 36px;
-    }
-    
-    .task-item h3 {
-        font-size: 0.875rem;
-    }
-    
-    .task-item p {
-        font-size: 0.75rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .task-item {
-        padding: 0.5rem;
-    }
-    
-    .task-item h3 {
-        font-size: 0.8rem;
-    }
-    
-    .task-item p {
-        font-size: 0.7rem;
-    }
-    
-    .task-item .task-actions button {
-        padding: 0.375rem;
-    }
-}
-
-/* Custom checkbox */
-.custom-checkbox {
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 50%;
-    border: 2px solid #d1d5db;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    background: #f0f2f5;
-}
-
-.custom-checkbox.checked {
-    background: linear-gradient(to right, #10b981, #059669);
-    border-color: #059669;
-}
-
-.custom-checkbox:hover {
-    border-color: #9ca3af;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-/* Disabled checkbox styles */
-.custom-checkbox.disabled {
-    cursor: not-allowed;
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-.custom-checkbox.disabled:hover {
-    border-color: #d1d5db;
-    box-shadow: none;
-}
-
-/* Add visual indication for completed tasks in Done tab */
-.task-item.completed .custom-checkbox.disabled {
-    background: #10b981;
-    border-color: #059669;
-}
-
-.task-item.completed .custom-checkbox.disabled::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 2px;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 1px;
-}
-
-/* Priority indicators */
-.priority-indicator {
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.priority-low {
-    background-color: #10b981;
-}
-
-.priority-medium {
-    background-color: #f59e0b;
-}
-
-.priority-high {
-    background-color: #ef4444;
-}
-
-/* Form styling */
-input:focus, textarea:focus, select:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5), inset 8px 8px 16px #d1d5db, inset -8px -8px 16px #ffffff;
-}
-
-input, textarea, select {
-    background: #f0f2f5;
-    border: 1px solid #e5e7eb;
-    transition: all 0.2s ease;
-}
-
-input:hover, textarea:hover, select:hover {
-    border-color: #d1d5db;
-}
-
-/* Mobile form adjustments */
-@media (max-width: 1024px) {
-    #taskFormContainer {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 40;
-        background: #f0f2f5;
-        overflow-y: auto;
-        display: none;
-        padding: 1rem;
-    }
-    
-    #taskFormContainer.show {
-        display: block;
-    }
-    
-    #taskFormContainer h2 {
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-    }
-}
-
-/* Toast animations */
-.toast {
-    transform: translateX(100%);
-    transition: all 0.3s ease;
-    max-width: 20rem;
-    word-wrap: break-word;
-}
-
-.toast.show {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-.toast.hide {
-    transform: translateX(100%);
-    opacity: 0;
-}
-
-/* Modal animations */
-.modal-enter {
-    opacity: 0;
-    transform: scale(0.95);
-}
-
-.modal-enter-active {
-    opacity: 1;
-    transform: scale(1);
-    transition: all 0.3s ease;
-}
-
-.modal-exit {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.modal-exit-active {
-    opacity: 0;
-    transform: scale(0.95);
-    transition: all 0.3s ease;
-}
-
-/* Responsive design improvements */
-@media (max-width: 768px) {
-    .custom-scrollbar {
-        max-height: 50vh;
-    }
-    
-    /* Mobile button improvements */
-    button {
-        min-height: 44px;
-        min-width: 44px;
-    }
-    
-    /* Better tap targets */
-    .task-item button {
-        padding: 0.75rem;
-    }
-    
-    /* Mobile typography */
-    .text-responsive {
-        font-size: 0.875rem;
-    }
-    
-    .text-responsive-xs {
-        font-size: 0.75rem;
-    }
-}
-
-@media (max-width: 480px) {
-    /* Extra small screen adjustments */
-    .task-item {
-        padding: 0.5rem;
-    }
-    
-    .priority-btn {
-        font-size: 0.75rem;
-        padding: 0.5rem;
-    }
-    
-    .filter-btn {
-        font-size: 0.75rem;
-        padding: 0.5rem 0.75rem;
-    }
-}
-
-/* Loading states */
-.loading {
-    opacity: 0.5;
-    pointer-events: none;
-    position: relative;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 0.75rem;
-}
-
-/* Hover effects */
-.hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-/* Focus states for accessibility */
-.focus-ring:focus {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
-
-/* Smooth transitions */
-* {
-    transition: colors 0.2s ease;
-}
-
-/* Task item animations */
+/* Slide Animations */
 @keyframes slideInLeft {
-    from {
-        transform: translateX(-100%);
+    0% {
+        transform: translateX(-100px) rotate(-10deg);
         opacity: 0;
     }
-    to {
-        transform: translateX(0);
+    50% {
+        transform: translateX(10px) rotate(2deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(0) rotate(0deg);
         opacity: 1;
     }
 }
 
-@keyframes slideOutRight {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(100%);
+@keyframes slideInRight {
+    0% {
+        transform: translateX(100px) rotate(10deg);
         opacity: 0;
     }
+    50% {
+        transform: translateX(-10px) rotate(-2deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+    }
 }
 
-.slide-in {
-    animation: slideInLeft 0.3s ease-out;
+@keyframes slideInDown {
+    0% {
+        transform: translateY(-100px) scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(10px) scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
 }
 
-.slide-out {
-    animation: slideOutRight 0.3s ease-out;
+@keyframes slideInUp {
+    0% {
+        transform: translateY(100px) scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-10px) scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
 }
 
-/* Utility classes */
-.text-gradient {
-    background: linear-gradient(to right, #2563eb, #7c3aed);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* Epic Entrance for Form */
+@keyframes epicEntrance {
+    0% {
+        transform: scale(0.3) rotateY(180deg);
+        opacity: 0;
+        filter: blur(10px);
+    }
+    50% {
+        transform: scale(1.1) rotateY(90deg);
+        opacity: 0.5;
+        filter: blur(5px);
+    }
+    100% {
+        transform: scale(1) rotateY(0deg);
+        opacity: 1;
+        filter: blur(0px);
+    }
 }
 
-.glassmorphism {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+/* Spectacular Reveal for Task List */
+@keyframes spectacularReveal {
+    0% {
+        transform: perspective(1000px) rotateX(90deg) translateZ(-100px);
+        opacity: 0;
+        filter: blur(10px);
+    }
+    50% {
+        transform: perspective(1000px) rotateX(45deg) translateZ(-50px);
+        opacity: 0.7;
+        filter: blur(5px);
+    }
+    100% {
+        transform: perspective(1000px) rotateX(0deg) translateZ(0px);
+        opacity: 1;
+        filter: blur(0px);
+    }
 }
 
-/* Error states */
-.error-input {
-    border-color: #ef4444 !important;
-    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5) !important;
+/* Cascade In for Task Items */
+@keyframes cascadeIn {
+    0% {
+        transform: translateY(50px) scale(0.8) rotateX(45deg);
+        opacity: 0;
+        filter: blur(5px);
+    }
+    60% {
+        transform: translateY(-10px) scale(1.05) rotateX(-5deg);
+        opacity: 0.8;
+        filter: blur(2px);
+    }
+    100% {
+        transform: translateY(0) scale(1) rotateX(0deg);
+        opacity: 1;
+        filter: blur(0px);
+    }
 }
 
-.error-text {
-    color: #ef4444;
-    font-size: 0.875rem;
+/* Header Drop Animation */
+@keyframes headerDrop {
+    0% {
+        transform: translateY(-100%) scale(0.9);
+        opacity: 0;
+    }
+    60% {
+        transform: translateY(10px) scale(1.02);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
 }
 
-/* Success states */
-.success-input {
-    border-color: #10b981 !important;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5) !important;
+/* Magical Glow Effect */
+@keyframes magicalGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
+    }
 }
 
-.success-text {
-    color: #10b981;
-    font-size: 0.875rem;
+/* Apply glow to stats cards */
+.grid > div {
+    animation: magicalGlow 3s ease-in-out infinite;
 }
 
-/* Fix overflow issues */
-.container-responsive {
-    max-width: 100%;
-    overflow-x: hidden;
+.grid > div:nth-child(1) { animation-delay: 0s; }
+.grid > div:nth-child(2) { animation-delay: 0.5s; }
+.grid > div:nth-child(3) { animation-delay: 1s; }
+.grid > div:nth-child(4) { animation-delay: 1.5s; }
+
+/* Floating Animation for Task Items */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
-/* Prevent text overflow */
-.text-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+/* Apply floating after initial load */
+.task-item {
+    animation: cascadeIn 0.6s ease-out backwards, float 6s ease-in-out infinite;
 }
 
-/* Better word wrapping */
-.word-break {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
+/* Pulsing Heart Beat for Important Elements */
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.05);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(1);
+    }
 }
 
-/* Mobile-specific fixes */
+/* Apply to high priority tasks */
+.task-item .priority-high {
+    animation: heartBeat 2s ease-in-out infinite;
+}
+
+/* Shimmer Effect for Loading States */
+@keyframes shimmer {
+    0% {
+        background-position: -468px 0;
+    }
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+/* Page Load Overlay Animation */
+.page-load-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    z-index: 9999;
+    animation: fadeOutOverlay 2s ease-in-out forwards;
+}
+
+@keyframes fadeOutOverlay {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Stagger animations for better effect */
+.animate-stagger-1 { animation-delay: 0.1s; }
+.animate-stagger-2 { animation-delay: 0.2s; }
+.animate-stagger-3 { animation-delay: 0.3s; }
+.animate-stagger-4 { animation-delay: 0.4s; }
+.animate-stagger-5 { animation-delay: 0.5s; }
+
+/* Mobile Optimizations */
 @media (max-width: 768px) {
-    /* Prevent horizontal scroll */
-    body {
-        overflow-x: hidden;
-    }
-    
-    /* Better spacing on mobile */
-    .space-y-3 > * + * {
-        margin-top: 0.75rem;
-    }
-    
-    /* Mobile toast positioning */
-    #toastContainer {
-        right: 1rem;
-        top: 1rem;
-        left: 1rem;
-        max-width: none;
-    }
-    
-    /* Mobile modal improvements */
-    #taskModal .bg-neu-bg {
-        margin: 1rem;
-        max-height: calc(100vh - 2rem);
-    }
-}
-
-/* Print styles */
-@media print {
-    .no-print {
-        display: none !important;
-    }
-    
+    /* Reduce animation complexity on mobile */
     .task-item {
-        box-shadow: none;
-        border: 1px solid #e5e7eb;
-        margin-bottom: 1rem;
-    }
-}
-
-/* High contrast mode */
-@media (prefers-contrast: high) {
-    .task-item {
-        border: 2px solid #000;
+        animation: slideInUp 0.4s ease-out backwards;
     }
     
-    .filter-btn.active {
-        background: #000 !important;
-        color: #fff !important;
+    .grid > div {
+        animation: slideInUp 0.4s ease-out backwards;
+    }
+    
+    .grid > div:nth-child(1) { animation-delay: 0.1s; }
+    .grid > div:nth-child(2) { animation-delay: 0.2s; }
+    .grid > div:nth-child(3) { animation-delay: 0.3s; }
+    .grid > div:nth-child(4) { animation-delay: 0.4s; }
+    
+    #taskFormContainer {
+        animation: slideInUp 0.5s ease-out 0.5s backwards;
+    }
+    
+    .lg\:col-span-2 > div {
+        animation: slideInUp 0.5s ease-out 0.6s backwards;
     }
 }
 
-/* Reduced motion */
+/* Reduce animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+/* Entrance animation for modals */
+#taskModal {
+    animation: modalEntrance 0.3s ease-out;
+}
+
+@keyframes modalEntrance {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Toast entrance animation */
+.toast {
+    animation: toastSlideIn 0.5s ease-out;
+}
+
+@keyframes toastSlideIn {
+    0% {
+        transform: translateX(100%) rotate(10deg);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
     }
 }

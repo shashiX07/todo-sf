@@ -342,6 +342,7 @@ class ModernTodoApp {
         this.tasks.push(task);
         this.saveTasks();
         this.renderTasks();
+        this.addAnimationToNewElements(); // Add this line
         this.updateStats();
         this.resetForm();
         this.showToast('Task created successfully!', 'success');
@@ -350,6 +351,15 @@ class ModernTodoApp {
         if (this.isMobile) {
             this.closeMobileForm();
         }
+    }
+
+    addAnimationToNewElements() {
+        // Add animation classes to newly created task items
+        const taskItems = document.querySelectorAll('.task-item:not(.animated)');
+        taskItems.forEach((item, index) => {
+            item.classList.add('animated');
+            item.style.animationDelay = `${index * 0.1}s`;
+        });
     }
 
     resetForm() {
@@ -575,7 +585,7 @@ class ModernTodoApp {
             
             this.saveTasks();
             this.renderTasks();
-            this.updateStats();
+            this.updateStats(); // This will now show correct stats
             this.showToast(`${completedCount} completed task(s) hidden from active view`, 'success');
         }
     }
@@ -644,24 +654,26 @@ class ModernTodoApp {
     renderTasks() {
         const taskList = document.getElementById('taskList');
         const emptyState = document.getElementById('emptyState');
-
+        
         if (!taskList || !emptyState) return;
 
         const filteredTasks = this.getFilteredTasks();
-
-        if (filteredTasks.length === 0) {
-            taskList.innerHTML = '';
-            emptyState.classList.remove('hidden');
-            return;
-        }
-
-        emptyState.classList.add('hidden');
         taskList.innerHTML = '';
 
-        filteredTasks.forEach(task => {
-            const taskElement = this.createTaskElement(task);
-            taskList.appendChild(taskElement);
-        });
+        if (filteredTasks.length === 0) {
+            emptyState.classList.remove('hidden');
+            taskList.classList.add('hidden');
+        } else {
+            emptyState.classList.add('hidden');
+            taskList.classList.remove('hidden');
+            
+            filteredTasks.forEach((task, index) => {
+                const taskElement = this.createTaskElement(task);
+                // Add stagger animation
+                taskElement.style.animationDelay = `${index * 0.1}s`;
+                taskList.appendChild(taskElement);
+            });
+        }
     }
 
     createTaskElement(task) {
@@ -746,9 +758,21 @@ class ModernTodoApp {
     }
 
     updateStats() {
-        const total = this.tasks.length;
-        const completed = this.tasks.filter(t => t.completed).length;
-        const active = total - completed;
+        // Get all tasks (not hidden by "Clear Done")
+        const allVisibleTasks = this.tasks.filter(t => !t.hidden);
+        
+        // Get all tasks including hidden ones for proper counting
+        const allTasks = this.tasks;
+        
+        // Calculate stats based on all tasks (including hidden completed ones)
+        const total = allTasks.length;
+        const completed = allTasks.filter(t => t.completed).length;
+        const active = allTasks.filter(t => !t.completed).length;
+        
+        // For display purposes, show visible active tasks (excluding hidden completed ones)
+        const visibleActive = allTasks.filter(t => !t.completed && !t.hidden).length;
+        
+        // Completion rate based on all tasks
         const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
 
         const totalEl = document.getElementById('totalTasks');
@@ -758,7 +782,7 @@ class ModernTodoApp {
 
         if (totalEl) totalEl.textContent = total;
         if (completedEl) completedEl.textContent = completed;
-        if (activeEl) activeEl.textContent = active;
+        if (activeEl) activeEl.textContent = visibleActive; // Show only visible active tasks
         if (rateEl) rateEl.textContent = `${completionRate}%`;
     }
 
